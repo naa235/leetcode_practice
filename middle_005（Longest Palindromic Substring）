@@ -1,0 +1,37 @@
+
+Given a string s, return the longest 
+palindromic substring in s.
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if (s.length() <= 1) return s;
+        // 在每两个字符之间（以及两端）插入'|'
+        string str = "|";
+        for (char c : s) {
+            str += c;
+            str += "|";
+        }
+        int start = 0; // 最长回文子串的开始位置
+        int max_length = 0; // 最长回文子串的长度
+        int center = 0; // 最长回文子串的中心位置
+        for (int i = 0; i < str.length(); ++i) {
+            int length = 0;
+            while (i - length >= 0 && i + length < str.length() && str[i - length] == str[i + length]) {
+                length++;
+            }
+            length--; // 减去最后一次不满足条件的增加
+
+            if (length > max_length) {
+                max_length = length;
+                center = i;
+            }
+        }
+        // 从str中提取回文子串，跳过'|'
+        string result = "";
+        for (int i = center - max_length; i <= center + max_length; ++i) {
+            if (str[i] != '|') result += str[i];
+        }
+        return result;
+    }
+};
