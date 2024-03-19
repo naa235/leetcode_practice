@@ -1,0 +1,41 @@
+Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+0 <= a, b, c, d < n
+a, b, c, and d are distinct.
+nums[a] + nums[b] + nums[c] + nums[d] == target
+You may return the answer in any order.
+
+
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        sort(nums.begin(),nums.end());
+        vector<vector<int>> myvec;
+        int n=nums.size();
+        for(int a=0;a<n-3;a++){
+            if(a>0&&nums[a]==nums[a-1])continue;
+            if ((long long)nums[a] + nums[a + 1] + nums[a + 2] + nums[a + 3] > target) break; // 优化一
+            if ((long long)nums[a] + nums[n - 3] + nums[n - 2] + nums[n - 1] < target) continue; // 优化二
+            for(int b=a+1;b<n-2;b++){
+                if(b>a+1&&nums[b]==nums[b-1])continue;
+                if ((long long)nums[a] + nums[b] + nums[b + 1] + nums[b + 2] > target) break; // 优化一
+                if ((long long)nums[a] + nums[b] + nums[n - 2] + nums[n - 1] < target) continue; // 优化二
+                //if(nums[a]+nums[b]>target/2)break;
+                int c=b+1;
+                int d=n-1;
+                while(c<d){
+                    long long sum=(long long)nums[a]+(long long)nums[b]+(long long)nums[c]+(long long)nums[d];
+                    if(sum>target)d--;
+                    else if(sum<target)c++;
+                    else{
+                        myvec.push_back(vector<int>{nums[a],nums[b],nums[c],nums[d]});
+                        d--;
+                        c++;
+                    }
+                    while(c<d&&c>b+1&&nums[c]==nums[c-1])c++;
+                    while(c<d&&d<n-1&&nums[d]==nums[d+1])d--;
+                }
+            }
+        }
+        return myvec;
+    }
+};
