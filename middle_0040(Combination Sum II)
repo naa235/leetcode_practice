@@ -1,0 +1,29 @@
+Given a collection of candidate numbers (candidates) and a target number (target),
+find all unique combinations in candidates where the candidate numbers sum to target.
+Each number in candidates may only be used once in the combination.
+Note: The solution set must not contain duplicate combinations.
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        set<vector<int>> allSets; // 使用set来自动去重和排序
+        vector<int> tempVec;
+        function<void(int, int)> backtrack = [&](int remain, int start) {
+            if (remain == 0) {
+                allSets.insert(tempVec);
+                return;
+            }
+            for (int i = start; i < candidates.size() && candidates[i] <= remain; ++i) {
+                // 跳过同一层级中相同的数字，以避免重复的组合
+                if (i > start && candidates[i] == candidates[i-1]) continue;
+                tempVec.push_back(candidates[i]);
+                backtrack(remain - candidates[i], i + 1); // 递归调用，注意这里是i+1，表示不重复利用当前元素
+                tempVec.pop_back(); // 回溯
+            }
+        };
+        backtrack(target, 0);
+        vector<vector<int>> result(allSets.begin(), allSets.end()); // 将set转换成vector
+        return result;
+    }
+};
