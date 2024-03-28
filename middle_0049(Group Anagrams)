@@ -1,0 +1,22 @@
+Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase,
+typically using all the original letters exactly once.
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        // 哈希表，键是排序后的字符串，值是原字符串的列表
+        unordered_map<string, vector<string>> map;
+        for (string s : strs) {
+            string key = s;
+            sort(key.begin(), key.end()); // 将字符串排序，作为键
+            map[key].push_back(s); // 添加原字符串到对应的列表中
+        }
+        vector<vector<string>> result;
+        for (auto& pair : map) {
+            result.push_back(pair.second); // 将每个键对应的字符串列表加入结果中
+        }
+
+        return result;
+    }
+};
