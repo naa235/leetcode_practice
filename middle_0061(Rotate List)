@@ -1,0 +1,35 @@
+Given the head of a linked list, rotate the list to the right by k places.
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head==nullptr)return head;
+        vector<int>allvec;
+        ListNode* node=head;
+        while(node!=nullptr){
+            allvec.push_back(node->val);
+            node=node->next;
+        }
+        k=k%allvec.size();
+        node=head;
+        for(int i=allvec.size()-k;i<allvec.size();i++){
+            node->val=allvec[i];
+            node=node->next;
+        }
+        for(int i=0;i<allvec.size()-k;i++){
+            node->val=allvec[i];
+            node=node->next;
+        }
+        return head;
+    }
+};
