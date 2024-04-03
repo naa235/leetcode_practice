@@ -1,0 +1,30 @@
+Given a m x n grid filled with non-negative numbers,
+find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+Note: You can only move either down or right at any point in time.
+
+
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int m=grid.size();
+        int n=grid[0].size();
+        vector<vector<int>>thisvec(m,vector<int>(n,grid[0][0]));
+        thisvec[0][0]=grid[0][0];
+        int sum=0;
+        for(int i=0;i<m;i++){
+            sum=sum+grid[i][0];
+            thisvec[i][0]=sum;
+        }
+        sum=0;
+        for(int i=0;i<n;i++){
+            sum=sum+grid[0][i];
+            thisvec[0][i]=sum;
+        }
+        for(int i=1;i<m;i++){
+            for(int j=1;j<n;j++){
+                thisvec[i][j]=min(thisvec[i][j-1],thisvec[i-1][j])+grid[i][j];
+            }
+        }
+        return thisvec[m-1][n-1];
+    }
+};
