@@ -1,0 +1,28 @@
+Given two integers n and k, 
+return all possible combinations of k numbers chosen from the range [1, n].
+You may return the answer in any order.
+
+#include <vector>
+#include <functional>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> allCombinations; // Store all combinations
+        vector<int> currentCombination; // Current combination being explored
+        function<void(int, int)> dfs = [&](int start, int depth) {
+            if (depth == k) { // Base case: combination of size k
+                allCombinations.push_back(currentCombination);
+                return;
+            }
+            for (int i = start; i <= n; ++i) {
+                currentCombination.push_back(i); // Add number to current combination
+                dfs(i + 1, depth + 1); // Recur with next start and increased depth
+                currentCombination.pop_back(); // Remove last added number to explore other combinations
+            }
+        };
+        dfs(1, 0); // Start DFS from 1 with depth 0
+        return allCombinations;
+    }
+};
